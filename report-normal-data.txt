@@ -1,0 +1,339 @@
+ls                                                                                                         1 ✘  19:36:13  
+       InvoiceCountryDriver.java        InvoiceCountryMapper.java        InvoiceCountryReducer.java 
+
+    ~/F/term6/cloud/docker-hadoop/hadoop-job/invoice-country    main ?5  cd ..                                                                                                        ✔  19:36:24  
+
+    ~/FaezeGhiasi/term6/cloud/docker-hadoop/hadoop-job    main ?5  cd ..                                                                                                              ✔  19:36:27  
+
+    ~/FaezeGhiasi/term6/cloud/docker-hadoop    main ?5  docker cp ./hadoop-job/invoice-country namenode:/app/                                                                         ✔  19:36:30  
+
+Successfully copied 5.63kB to namenode:/app/
+
+    ~/FaezeGhiasi/term6/cloud/docker-hadoop    main ?5  docker exec -it namenode bash                                                                                                 ✔  19:36:40  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+root@e40c7dcc43bc:/# ls
+KEYS  OnlineRetail.csv	app  bin  boot	dev  entrypoint.sh  etc  hadoop  hadoop-data  home  lib  lib64	media  mnt  opt  proc  root  run  run.sh  sbin	srv  sys  tmp  usr  var
+root@e40c7dcc43bc:/# ls app
+invoice-country
+root@e40c7dcc43bc:/# ls app/invoice-country/InvoiceCountry
+ls: cannot access 'app/invoice-country/InvoiceCountry': No such file or directory
+root@e40c7dcc43bc:/# ls app/invoice-country               
+InvoiceCountryDriver.java  InvoiceCountryMapper.java  InvoiceCountryReducer.java
+root@e40c7dcc43bc:/# clear
+
+root@e40c7dcc43bc:/# ls
+KEYS  OnlineRetail.csv	app  bin  boot	dev  entrypoint.sh  etc  hadoop  hadoop-data  home  lib  lib64	media  mnt  opt  proc  root  run  run.sh  sbin	srv  sys  tmp  usr  var
+root@e40c7dcc43bc:/# cd /app/invoice-country
+root@e40c7dcc43bc:/app/invoice-country# javac -classpath `hadoop classpath` *.java
+root@e40c7dcc43bc:/app/invoice-country# 
+root@e40c7dcc43bc:/app/invoice-country# ls
+InvoiceCountryDriver.class  InvoiceCountryDriver.java  InvoiceCountryMapper.class  InvoiceCountryMapper.java  InvoiceCountryReducer.class  InvoiceCountryReducer.java
+root@e40c7dcc43bc:/app/invoice-country# jar cf invoice-country.jar *.class
+root@e40c7dcc43bc:/app/invoice-country# ls
+InvoiceCountryDriver.class  InvoiceCountryDriver.java  InvoiceCountryMapper.class  InvoiceCountryMapper.java  InvoiceCountryReducer.class  InvoiceCountryReducer.java  invoice-country.jar
+root@e40c7dcc43bc:/app/invoice-country# cd
+root@e40c7dcc43bc:~# ls
+root@e40c7dcc43bc:~# ls
+root@e40c7dcc43bc:~# cd ~
+root@e40c7dcc43bc:~# ls
+root@e40c7dcc43bc:~# cd /app 
+root@e40c7dcc43bc:/app# ls
+invoice-country
+root@e40c7dcc43bc:/app# cd ..
+root@e40c7dcc43bc:/# ls
+KEYS  OnlineRetail.csv	app  bin  boot	dev  entrypoint.sh  etc  hadoop  hadoop-data  home  lib  lib64	media  mnt  opt  proc  root  run  run.sh  sbin	srv  sys  tmp  usr  var
+root@e40c7dcc43bc:/# ls app
+invoice-country
+root@e40c7dcc43bc:/# ls hadoop-data/      
+root@e40c7dcc43bc:/# ls hadoop      
+dfs
+root@e40c7dcc43bc:/# ls data
+ls: cannot access 'data': No such file or directory
+root@e40c7dcc43bc:/# ls /app/invoice-country
+InvoiceCountryDriver.class  InvoiceCountryDriver.java  InvoiceCountryMapper.class  InvoiceCountryMapper.java  InvoiceCountryReducer.class  InvoiceCountryReducer.java  invoice-country.jar
+root@e40c7dcc43bc:/# hdfs dfs -ls /data
+
+Found 1 items
+-rw-r--r--   3 root supergroup   45038760 2025-06-17 15:48 /data/OnlineRetail.csv
+root@e40c7dcc43bc:/# 
+root@e40c7dcc43bc:/# cd app/invoice-country/
+root@e40c7dcc43bc:/app/invoice-country# hadoop jar invoice-country.jar InvoiceCountryDriver /data/OnlineRetail.csv /output/invoice-by-country
+
+2025-06-17 16:15:02,436 INFO client.RMProxy: Connecting to ResourceManager at resourcemanager/172.24.0.6:8032
+2025-06-17 16:15:02,624 INFO client.AHSProxy: Connecting to Application History server at historyserver/172.24.0.2:10200
+2025-06-17 16:15:02,943 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2025-06-17 16:15:02,962 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/root/.staging/job_1750166746491_0001
+2025-06-17 16:15:03,094 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:15:03,318 INFO input.FileInputFormat: Total input files to process : 1
+2025-06-17 16:15:03,384 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:15:03,430 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:15:03,457 INFO mapreduce.JobSubmitter: number of splits:1
+2025-06-17 16:15:03,558 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:15:03,573 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1750166746491_0001
+2025-06-17 16:15:03,573 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-06-17 16:15:03,747 INFO conf.Configuration: resource-types.xml not found
+2025-06-17 16:15:03,747 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2025-06-17 16:15:04,218 INFO impl.YarnClientImpl: Submitted application application_1750166746491_0001
+2025-06-17 16:15:04,282 INFO mapreduce.Job: The url to track the job: http://resourcemanager:8088/proxy/application_1750166746491_0001/
+2025-06-17 16:15:04,283 INFO mapreduce.Job: Running job: job_1750166746491_0001
+2025-06-17 16:15:11,405 INFO mapreduce.Job: Job job_1750166746491_0001 running in uber mode : false
+2025-06-17 16:15:11,407 INFO mapreduce.Job:  map 0% reduce 0%
+2025-06-17 16:15:22,531 INFO mapreduce.Job:  map 100% reduce 0%
+2025-06-17 16:15:27,571 INFO mapreduce.Job:  map 100% reduce 100%
+2025-06-17 16:15:28,592 INFO mapreduce.Job: Job job_1750166746491_0001 completed successfully
+2025-06-17 16:15:28,703 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=27322
+		FILE: Number of bytes written=512363
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=45038867
+		HDFS: Number of bytes written=504
+		HDFS: Number of read operations=8
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=1
+		Launched reduce tasks=1
+		Rack-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=32724
+		Total time spent by all reduces in occupied slots (ms)=23400
+		Total time spent by all map tasks (ms)=8181
+		Total time spent by all reduce tasks (ms)=2925
+		Total vcore-milliseconds taken by all map tasks=8181
+		Total vcore-milliseconds taken by all reduce tasks=2925
+		Total megabyte-milliseconds taken by all map tasks=33509376
+		Total megabyte-milliseconds taken by all reduce tasks=23961600
+	Map-Reduce Framework
+		Map input records=541910
+		Map output records=541909
+		Map output bytes=9958230
+		Map output materialized bytes=27314
+		Input split bytes=107
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=38
+		Reduce shuffle bytes=27314
+		Reduce input records=541909
+		Reduce output records=38
+		Spilled Records=1083818
+		Shuffled Maps =1
+		Failed Shuffles=0
+		Merged Map outputs=1
+		GC time elapsed (ms)=279
+		CPU time spent (ms)=11710
+		Physical memory (bytes) snapshot=1278504960
+		Virtual memory (bytes) snapshot=13627211776
+		Total committed heap usage (bytes)=1571815424
+		Peak Map Physical memory (bytes)=989376512
+		Peak Map Virtual memory (bytes)=5137473536
+		Peak Reduce Physical memory (bytes)=289128448
+		Peak Reduce Virtual memory (bytes)=8489738240
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=45038760
+	File Output Format Counters 
+		Bytes Written=504
+root@e40c7dcc43bc:/app/invoice-country# 
+root@e40c7dcc43bc:/app/invoice-country# hdfs dfs -cat /output/invoice-by-country/part-r-00000
+2025-06-17 16:16:38,393 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+
+Australia	1259
+Austria	401
+Bahrain	19
+Belgium	2069
+Brazil	32
+Canada	151
+Channel Islands	758
+Cyprus	622
+Czech Republic	30
+Denmark	389
+EIRE	8196
+European Community	61
+Finland	695
+France	8557
+Germany	9495
+Greece	146
+Hong Kong	288
+Iceland	182
+Israel	297
+Italy	803
+Japan	358
+Lebanon	45
+Lithuania	35
+Malta	127
+Netherlands	2371
+Norway	1086
+Poland	341
+Portugal	1519
+RSA	58
+Saudi Arabia	10
+Singapore	229
+Spain	2533
+Sweden	462
+Switzerland	2002
+USA	291
+United Arab Emirates	68
+United Kingdom	495478
+Unspecified	446
+root@e40c7dcc43bc:/app/invoice-country# 
+root@e40c7dcc43bc:/app/invoice-country# 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    ~/term6/cloud/docker-hadoop  docker cp sales-by-country namenode:/app/                                                                                                               ✔  19:55:05  
+
+Successfully copied 6.14kB to namenode:/app/
+
+    ~/term6/cloud/docker-hadoop                                                                                                                                                          ✔  19:55:08  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+root@e40c7dcc43bc:/app/invoice-country# 
+root@e40c7dcc43bc:/app/invoice-country# cd ..
+root@e40c7dcc43bc:/app# ls
+invoice-country  sales-by-country
+root@e40c7dcc43bc:/app# cd sales-by-country/
+root@e40c7dcc43bc:/app/sales-by-country# javac -classpath `hadoop classpath` -d . *.java
+
+root@e40c7dcc43bc:/app/sales-by-country# 
+root@e40c7dcc43bc:/app/sales-by-country# ls
+InvoiceSalesDriver.class  InvoiceSalesDriver.java  InvoiceSalesMapper.class  InvoiceSalesMapper.java  InvoiceSalesReducer.class  InvoiceSalesReducer.java
+root@e40c7dcc43bc:/app/sales-by-country# jar cf sales-by-country.jar *.class
+root@e40c7dcc43bc:/app/sales-by-country# ls
+InvoiceSalesDriver.class  InvoiceSalesDriver.java  InvoiceSalesMapper.class  InvoiceSalesMapper.java  InvoiceSalesReducer.class  InvoiceSalesReducer.java  sales-by-country.jar
+root@e40c7dcc43bc:/app/sales-by-country# hadoop jar sales-by-country.jar InvoiceSalesDriver /data/OnlineRetail.csv /output/sales-by-country
+2025-06-17 16:26:18,416 INFO client.RMProxy: Connecting to ResourceManager at resourcemanager/172.24.0.6:8032
+2025-06-17 16:26:18,607 INFO client.AHSProxy: Connecting to Application History server at historyserver/172.24.0.2:10200
+2025-06-17 16:26:18,796 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2025-06-17 16:26:18,824 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/root/.staging/job_1750166746491_0002
+2025-06-17 16:26:18,954 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:26:19,130 INFO input.FileInputFormat: Total input files to process : 1
+2025-06-17 16:26:19,172 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:26:19,203 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:26:19,217 INFO mapreduce.JobSubmitter: number of splits:1
+2025-06-17 16:26:19,323 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2025-06-17 16:26:19,341 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1750166746491_0002
+2025-06-17 16:26:19,342 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-06-17 16:26:19,507 INFO conf.Configuration: resource-types.xml not found
+2025-06-17 16:26:19,507 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2025-06-17 16:26:19,773 INFO impl.YarnClientImpl: Submitted application application_1750166746491_0002
+2025-06-17 16:26:19,830 INFO mapreduce.Job: The url to track the job: http://resourcemanager:8088/proxy/application_1750166746491_0002/
+2025-06-17 16:26:19,831 INFO mapreduce.Job: Running job: job_1750166746491_0002
+2025-06-17 16:26:26,947 INFO mapreduce.Job: Job job_1750166746491_0002 running in uber mode : false
+2025-06-17 16:26:26,949 INFO mapreduce.Job:  map 0% reduce 0%
+2025-06-17 16:26:32,025 INFO mapreduce.Job:  map 100% reduce 0%
+2025-06-17 16:26:38,075 INFO mapreduce.Job:  map 100% reduce 100%
+2025-06-17 16:26:38,088 INFO mapreduce.Job: Job job_1750166746491_0002 completed successfully
+2025-06-17 16:26:38,214 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=1032517
+		FILE: Number of bytes written=2522731
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=45038867
+		HDFS: Number of bytes written=1005
+		HDFS: Number of read operations=8
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=1
+		Launched reduce tasks=1
+		Rack-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=12944
+		Total time spent by all reduces in occupied slots (ms)=22904
+		Total time spent by all map tasks (ms)=3236
+		Total time spent by all reduce tasks (ms)=2863
+		Total vcore-milliseconds taken by all map tasks=3236
+		Total vcore-milliseconds taken by all reduce tasks=2863
+		Total megabyte-milliseconds taken by all map tasks=13254656
+		Total megabyte-milliseconds taken by all reduce tasks=23453696
+	Map-Reduce Framework
+		Map input records=541910
+		Map output records=537113
+		Map output bytes=12017472
+		Map output materialized bytes=1032509
+		Input split bytes=107
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=38
+		Reduce shuffle bytes=1032509
+		Reduce input records=537113
+		Reduce output records=38
+		Spilled Records=1074226
+		Shuffled Maps =1
+		Failed Shuffles=0
+		Merged Map outputs=1
+		GC time elapsed (ms)=116
+		CPU time spent (ms)=5290
+		Physical memory (bytes) snapshot=734564352
+		Virtual memory (bytes) snapshot=13631606784
+		Total committed heap usage (bytes)=987758592
+		Peak Map Physical memory (bytes)=447983616
+		Peak Map Virtual memory (bytes)=5137457152
+		Peak Reduce Physical memory (bytes)=286580736
+		Peak Reduce Virtual memory (bytes)=8494149632
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=45038760
+	File Output Format Counters 
+		Bytes Written=1005
+root@e40c7dcc43bc:/app/sales-by-country# hdfs dfs -cat /output/sales-by-country/part-r-00000
+
+2025-06-17 16:26:49,817 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+Australia	135330.19000000006
+Austria	10149.279999999995
+Bahrain	548.4
+Belgium	40752.83000000016
+Brazil	1143.6
+Canada	3599.6800000000017
+Channel Islands	19950.54000000001
+Cyprus	12791.309999999998
+Czech Republic	707.7199999999999
+Denmark	18665.180000000008
+EIRE	262112.47999999992
+European Community	1291.7500000000005
+Finland	22226.689999999977
+France	197194.14999999895
+Germany	220791.77999999793
+Greece	4644.820000000001
+Hong Kong	10037.840000000006
+Iceland	4299.8
+Israel	7867.419999999997
+Italy	16506.030000000024
+Japan	34616.05999999997
+Lebanon	1693.8799999999999
+Lithuania	1661.0600000000002
+Malta	2503.190000000002
+Netherlands	283440.6600000003
+Norway	34908.13000000005
+Poland	7193.339999999996
+Portugal	29272.340000000015
+RSA	1002.31
+Saudi Arabia	131.17000000000002
+Singapore	9054.690000000004
+Spain	54632.8600000001
+Sweden	36374.14999999999
+Switzerland	56199.23000000006
+USA	1730.9199999999996
+United Arab Emirates	1877.0800000000004
+United Kingdom	8148025.164001749
+Unspecified	4746.649999999998
+root@e40c7dcc43bc:/app/sales-by-country# 
+root@e40c7dcc43bc:/app/sales-by-country# 
+
+
+

@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - 9870:9870
+      - 9000:9000
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9870"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    volumes:
+      - hadoop_datanode1:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    depends_on:
+      namenode:
+        condition: service_healthy
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    volumes:
+      - hadoop_datanode2:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    depends_on:
+      namenode:
+        condition: service_healthy
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    ports:
+      - 8088:8088
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    depends_on:
+      namenode:
+        condition: service_healthy
+      datanode1:
+        condition: service_healthy
+      datanode2:
+        condition: service_healthy
+
+  nodemanager1:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager1
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    depends_on:
+      resourcemanager:
+        condition: service_started
+
+  nodemanager2:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager2
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+    depends_on:
+      resourcemanager:
+        condition: service_started
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    ports:
+      - 8188:8188
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop.env
+    networks:
+      - hadoop
+
+networks:
+  hadoop:
+
+volumes:
+  hadoop_namenode:
+  hadoop_datanode1:
+  hadoop_datanode2:
+  hadoop_historyserver:
